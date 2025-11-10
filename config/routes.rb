@@ -6,9 +6,13 @@ Rails.application.routes.draw do
 
   # Pages publiques
   get 'about', to: 'pages#about'
-  get 'sermons', to: 'pages#sermons'
-  get 'events', to: 'pages#events'
   get 'contact', to: 'pages#contact'
+  
+  # Routes publiques pour sermons et événements
+  get 'sermons', to: 'pages#sermons'
+  get 'sermons/:id', to: 'pages#show_sermon', as: 'sermon'
+  get 'events', to: 'pages#events'
+  get 'events/:id', to: 'pages#show_event', as: 'event'
 
   # Espace membre
   scope :member, module: :member, as: :member do

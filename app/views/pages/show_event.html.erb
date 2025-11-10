@@ -1,0 +1,87 @@
+<div class="py-12">
+  <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+    <!-- Bouton retour -->
+    <div class="mb-6">
+      <%= link_to events_path, class: "inline-flex items-center text-indigo-400 hover:text-indigo-300 transition-colors" do %>
+        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+        </svg>
+        Retour aux événements
+      <% end %>
+    </div>
+
+    <!-- Image de l'événement -->
+    <% if @event.image.attached? %>
+      <div class="mb-8 rounded-lg overflow-hidden shadow-xl">
+        <%= image_tag @event.image, class: "w-full h-96 object-cover", alt: @event.title %>
+      </div>
+    <% end %>
+
+    <!-- Titre et informations -->
+    <div class="bg-gray-800 rounded-lg p-8 shadow-xl mb-8">
+      <div class="flex items-center justify-between mb-6">
+        <h1 class="text-4xl font-bold text-white"><%= @event.title %></h1>
+        <% if @event.date >= Date.current %>
+          <span class="px-4 py-2 text-sm font-medium text-green-400 bg-green-900 rounded-full">À venir</span>
+        <% else %>
+          <span class="px-4 py-2 text-sm font-medium text-gray-400 bg-gray-700 rounded-full">Passé</span>
+        <% end %>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+        <!-- Date -->
+        <div class="flex items-start space-x-3">
+          <div class="flex-shrink-0">
+            <div class="w-12 h-12 bg-indigo-600 rounded-lg flex items-center justify-center">
+              <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+              </svg>
+            </div>
+          </div>
+          <div>
+            <h3 class="text-sm font-medium text-gray-400 mb-1">Date</h3>
+            <p class="text-lg font-semibold text-white"><%= @event.date.strftime("%A %d %B %Y") %></p>
+          </div>
+        </div>
+
+        <!-- Heure -->
+        <% if @event.start_time && @event.end_time %>
+          <div class="flex items-start space-x-3">
+            <div class="flex-shrink-0">
+              <div class="w-12 h-12 bg-indigo-600 rounded-lg flex items-center justify-center">
+                <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+              </div>
+            </div>
+            <div>
+              <h3 class="text-sm font-medium text-gray-400 mb-1">Horaires</h3>
+              <p class="text-lg font-semibold text-white">
+                <%= @event.start_time.strftime("%H:%M") %> - <%= @event.end_time.strftime("%H:%M") %>
+              </p>
+            </div>
+          </div>
+        <% end %>
+      </div>
+
+      <!-- Description -->
+      <div class="mt-6">
+        <h2 class="text-2xl font-semibold text-white mb-4">Description</h2>
+        <p class="text-gray-300 leading-relaxed whitespace-pre-line"><%= @event.description %></p>
+      </div>
+    </div>
+
+    <!-- Actions -->
+    <div class="text-center">
+      <% if @event.date >= Date.current %>
+        <button class="inline-flex items-center px-6 py-3 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors">
+          <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+          S'inscrire à cet événement
+        </button>
+      <% end %>
+    </div>
+  </div>
+</div>
+

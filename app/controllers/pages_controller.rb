@@ -2,15 +2,28 @@ class PagesController < ApplicationController
   def home
     # Fetch daily verse from API
     @daily_verse = fetch_daily_verse
+    # Charger les sermons et événements récents pour la page d'accueil
+    @recent_sermons = Sermon.recent.limit(3)
+    @upcoming_events = Event.upcoming.limit(3)
   end
 
   def about
   end
 
   def sermons
+    @sermons = Sermon.recent
+  end
+
+  def show_sermon
+    @sermon = Sermon.find(params[:id])
   end
 
   def events
+    @events = Event.upcoming
+  end
+
+  def show_event
+    @event = Event.find(params[:id])
   end
 
   def contact

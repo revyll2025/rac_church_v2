@@ -1,0 +1,50 @@
+<div class="py-6">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 md:px-8">
+    <h1 class="text-2xl font-semibold text-gray-100 mb-6">Événements</h1>
+    
+    <% if @events.any? %>
+      <div class="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+        <% @events.each do |event| %>
+          <%= link_to member_event_path(event), class: "group" do %>
+            <div class="bg-white overflow-hidden shadow rounded-lg hover:shadow-xl transition-all duration-300">
+              <% if event.image.attached? %>
+                <div class="h-48 overflow-hidden">
+                  <%= image_tag event.image, class: "w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" %>
+                </div>
+              <% end %>
+              <div class="p-5">
+                <div class="flex items-center justify-between mb-2">
+                  <span class="text-sm font-medium text-indigo-600"><%= event.date.strftime("%d/%m/%Y") %></span>
+                  <% if event.date >= Date.current %>
+                    <span class="px-2 py-1 text-xs font-medium text-green-600 bg-green-100 rounded-full">À venir</span>
+                  <% else %>
+                    <span class="px-2 py-1 text-xs font-medium text-gray-600 bg-gray-200 rounded-full">Passé</span>
+                  <% end %>
+                </div>
+                <h3 class="text-lg font-semibold text-gray-900 mb-2 group-hover:text-indigo-600 transition-colors"><%= event.title %></h3>
+                <% if event.description.present? %>
+                  <p class="text-sm text-gray-500 line-clamp-2 mb-3"><%= truncate(event.description, length: 100) %></p>
+                <% end %>
+                <% if event.start_time && event.end_time %>
+                  <p class="text-xs text-gray-400">
+                    <%= event.start_time.strftime("%H:%M") %> - <%= event.end_time.strftime("%H:%M") %>
+                  </p>
+                <% end %>
+              </div>
+              <div class="bg-gray-50 px-5 py-3">
+                <div class="text-sm">
+                  <span class="font-medium text-indigo-600 group-hover:text-indigo-500">Voir les détails →</span>
+                </div>
+              </div>
+            </div>
+          <% end %>
+        <% end %>
+      </div>
+    <% else %>
+      <div class="text-center py-12">
+        <p class="text-gray-400 text-lg">Aucun événement disponible pour le moment.</p>
+      </div>
+    <% end %>
+  </div>
+</div>
+

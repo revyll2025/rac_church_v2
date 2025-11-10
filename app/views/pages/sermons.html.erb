@@ -5,46 +5,34 @@
       <p class="text-lg text-gray-300">Découvrez nos derniers sermons et enseignements</p>
     </div>
 
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-      <!-- Sermon 1 -->
-      <div class="bg-gray-800 rounded-lg overflow-hidden">
-        <div class="p-6">
-          <h3 class="text-xl font-semibold text-white mb-2">L'Amour de Dieu</h3>
-          <p class="text-gray-400 mb-4">Pasteur Jean Dupont</p>
-          <p class="text-gray-300 mb-4">Un message sur l'amour inconditionnel de Dieu pour l'humanité.</p>
-          <div class="flex justify-between items-center">
-            <span class="text-sm text-gray-400">12 Mars 2024</span>
-            <a href="#" class="text-indigo-400 hover:text-indigo-300">Écouter →</a>
-          </div>
-        </div>
+    <% if @sermons.any? %>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <% @sermons.each do |sermon| %>
+          <%= link_to sermon_path(sermon), class: "group" do %>
+            <div class="bg-gray-800 rounded-lg overflow-hidden hover:bg-gray-700 transition-all duration-300 transform hover:scale-105">
+              <div class="p-6">
+                <h3 class="text-xl font-semibold text-white mb-2 group-hover:text-indigo-400 transition-colors"><%= sermon.title %></h3>
+                <p class="text-gray-400 mb-4"><%= sermon.speaker %></p>
+                <% if sermon.description.present? %>
+                  <p class="text-gray-300 mb-4 line-clamp-3"><%= truncate(sermon.description, length: 120) %></p>
+                <% end %>
+                <div class="flex justify-between items-center">
+                  <span class="text-sm text-gray-400"><%= sermon.date.strftime("%d %b %Y") %></span>
+                  <span class="text-indigo-400 group-hover:text-indigo-300 transition-colors">Voir détails →</span>
+                </div>
+                <% if sermon.scripture_references.present? %>
+                  <p class="text-xs text-gray-500 mt-2 italic"><%= sermon.scripture_references %></p>
+                <% end %>
+              </div>
+            </div>
+          <% end %>
+        <% end %>
       </div>
-
-      <!-- Sermon 2 -->
-      <div class="bg-gray-800 rounded-lg overflow-hidden">
-        <div class="p-6">
-          <h3 class="text-xl font-semibold text-white mb-2">La Foi en Action</h3>
-          <p class="text-gray-400 mb-4">Pasteur Marie Martin</p>
-          <p class="text-gray-300 mb-4">Comment mettre notre foi en pratique dans notre vie quotidienne.</p>
-          <div class="flex justify-between items-center">
-            <span class="text-sm text-gray-400">5 Mars 2024</span>
-            <a href="#" class="text-indigo-400 hover:text-indigo-300">Écouter →</a>
-          </div>
-        </div>
+    <% else %>
+      <div class="text-center py-12">
+        <p class="text-gray-400 text-lg">Aucun sermon disponible pour le moment.</p>
       </div>
-
-      <!-- Sermon 3 -->
-      <div class="bg-gray-800 rounded-lg overflow-hidden">
-        <div class="p-6">
-          <h3 class="text-xl font-semibold text-white mb-2">Le Pardon</h3>
-          <p class="text-gray-400 mb-4">Pasteur Jean Dupont</p>
-          <p class="text-gray-300 mb-4">L'importance du pardon dans notre vie spirituelle.</p>
-          <div class="flex justify-between items-center">
-            <span class="text-sm text-gray-400">26 Février 2024</span>
-            <a href="#" class="text-indigo-400 hover:text-indigo-300">Écouter →</a>
-          </div>
-        </div>
-      </div>
-    </div>
+    <% end %>
 
     <!-- Filtres et recherche -->
     <div class="mt-12 bg-gray-800 p-6 rounded-lg">

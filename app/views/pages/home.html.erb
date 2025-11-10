@@ -151,50 +151,72 @@
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
       <!-- Prochains Événements -->
       <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8">
-        <h3 class="text-2xl font-semibold text-gray-900 dark:text-white mb-6">Prochains Événements</h3>
+        <div class="flex items-center justify-between mb-6">
+          <h3 class="text-2xl font-semibold text-gray-900 dark:text-white">Prochains Événements</h3>
+          <%= link_to events_path, class: "text-sm text-indigo-600 dark:text-indigo-400 hover:text-indigo-500" do %>
+            Voir tout →
+          <% end %>
+        </div>
         <div class="space-y-6">
-          <div class="flex items-start space-x-4 group hover:bg-gray-50 dark:hover:bg-gray-700 p-4 rounded-lg transition-all duration-300">
-            <div class="flex-shrink-0 w-16 h-16 bg-indigo-100 dark:bg-indigo-900 rounded-lg flex items-center justify-center">
-              <span class="text-indigo-600 dark:text-indigo-300 font-semibold">15</span>
-              <span class="text-indigo-600 dark:text-indigo-300 text-sm">Mar</span>
-            </div>
-            <div>
-              <h4 class="text-lg font-medium text-gray-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">Culte de Pâques</h4>
-              <p class="text-gray-600 dark:text-gray-300">10:00 - 12:00</p>
-              <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">Une célébration spéciale pour Pâques</p>
-            </div>
-          </div>
-          <div class="flex items-start space-x-4 group hover:bg-gray-50 dark:hover:bg-gray-700 p-4 rounded-lg transition-all duration-300">
-            <div class="flex-shrink-0 w-16 h-16 bg-indigo-100 dark:bg-indigo-900 rounded-lg flex items-center justify-center">
-              <span class="text-indigo-600 dark:text-indigo-300 font-semibold">20</span>
-              <span class="text-indigo-600 dark:text-indigo-300 text-sm">Mar</span>
-            </div>
-            <div>
-              <h4 class="text-lg font-medium text-gray-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">Conférence Biblique</h4>
-              <p class="text-gray-600 dark:text-gray-300">19:00 - 21:00</p>
-              <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">Une soirée d'étude biblique approfondie</p>
-            </div>
-          </div>
+          <% if @upcoming_events.any? %>
+            <% @upcoming_events.each do |event| %>
+              <%= link_to event_path(event), class: "flex items-start space-x-4 group hover:bg-gray-50 dark:hover:bg-gray-700 p-4 rounded-lg transition-all duration-300" do %>
+                <div class="flex-shrink-0 w-16 h-16 bg-indigo-100 dark:bg-indigo-900 rounded-lg flex flex-col items-center justify-center">
+                  <span class="text-indigo-600 dark:text-indigo-300 font-semibold"><%= event.date.day %></span>
+                  <span class="text-indigo-600 dark:text-indigo-300 text-xs"><%= event.date.strftime("%b") %></span>
+                </div>
+                <div class="flex-1">
+                  <h4 class="text-lg font-medium text-gray-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors"><%= event.title %></h4>
+                  <% if event.start_time && event.end_time %>
+                    <p class="text-gray-600 dark:text-gray-300"><%= event.start_time.strftime("%H:%M") %> - <%= event.end_time.strftime("%H:%M") %></p>
+                  <% end %>
+                  <% if event.description.present? %>
+                    <p class="text-sm text-gray-500 dark:text-gray-400 mt-1 line-clamp-2"><%= truncate(event.description, length: 80) %></p>
+                  <% end %>
+                </div>
+              <% end %>
+            <% end %>
+          <% else %>
+            <p class="text-gray-500 dark:text-gray-400">Aucun événement à venir pour le moment.</p>
+          <% end %>
         </div>
       </div>
 
-      <!-- Dernières Nouvelles -->
+      <!-- Sermons Récents -->
       <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8">
-        <h3 class="text-2xl font-semibold text-gray-900 dark:text-white mb-6">Dernières Nouvelles</h3>
+        <div class="flex items-center justify-between mb-6">
+          <h3 class="text-2xl font-semibold text-gray-900 dark:text-white">Sermons Récents</h3>
+          <%= link_to sermons_path, class: "text-sm text-indigo-600 dark:text-indigo-400 hover:text-indigo-500" do %>
+            Voir tout →
+          <% end %>
+        </div>
         <div class="space-y-6">
-          <article class="group">
-            <div class="relative overflow-hidden rounded-lg mb-4">
-              <%= image_tag "DALL·E 2025-01-08 03.54.36 - The exterior of a large modern church with sleek architectural design and large glass panels, surrounded by a beautifully landscaped area with lush gr.webp", class: "w-full h-48 object-cover transform group-hover:scale-105 transition-transform duration-300", alt: "Nouvelle de l'église" %>
-            </div>
-            <h4 class="text-lg font-medium text-gray-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">Nouveau Programme de Jeunesse</h4>
-            <p class="text-gray-600 dark:text-gray-300 mt-2">Lancement d'un nouveau programme pour les jeunes de notre communauté...</p>
-            <a href="#" class="inline-flex items-center mt-4 text-indigo-600 dark:text-indigo-400 hover:text-indigo-500">
-              Lire la suite
-              <svg class="ml-2 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-              </svg>
-            </a>
-          </article>
+          <% if @recent_sermons.any? %>
+            <% @recent_sermons.each do |sermon| %>
+              <%= link_to sermon_path(sermon), class: "group" do %>
+                <article class="hover:bg-gray-50 dark:hover:bg-gray-700 p-4 rounded-lg transition-all duration-300">
+                  <div class="flex items-start space-x-4">
+                    <div class="flex-shrink-0">
+                      <div class="w-12 h-12 bg-indigo-100 dark:bg-indigo-900 rounded-lg flex items-center justify-center">
+                        <svg class="w-6 h-6 text-indigo-600 dark:text-indigo-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                        </svg>
+                      </div>
+                    </div>
+                    <div class="flex-1">
+                      <h4 class="text-lg font-medium text-gray-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors"><%= sermon.title %></h4>
+                      <p class="text-gray-600 dark:text-gray-300 mt-1">Par <%= sermon.speaker %> • <%= sermon.date.strftime("%d %b %Y") %></p>
+                      <% if sermon.description.present? %>
+                        <p class="text-sm text-gray-500 dark:text-gray-400 mt-2 line-clamp-2"><%= truncate(sermon.description, length: 100) %></p>
+                      <% end %>
+                    </div>
+                  </div>
+                </article>
+              <% end %>
+            <% end %>
+          <% else %>
+            <p class="text-gray-500 dark:text-gray-400">Aucun sermon disponible pour le moment.</p>
+          <% end %>
         </div>
       </div>
     </div>

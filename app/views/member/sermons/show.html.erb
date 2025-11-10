@@ -1,0 +1,84 @@
+<div class="py-6">
+  <div class="max-w-4xl mx-auto px-4 sm:px-6 md:px-8">
+    <!-- Bouton retour -->
+    <div class="mb-6">
+      <%= link_to member_sermons_path, class: "inline-flex items-center text-indigo-400 hover:text-indigo-300 transition-colors" do %>
+        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+        </svg>
+        Retour aux sermons
+      <% end %>
+    </div>
+
+    <!-- Contenu du sermon -->
+    <div class="bg-white rounded-lg shadow-xl p-8">
+      <h1 class="text-3xl font-bold text-gray-900 mb-4"><%= @sermon.title %></h1>
+      
+      <div class="flex items-center space-x-4 text-gray-600 mb-6">
+        <span class="flex items-center">
+          <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+          </svg>
+          <%= @sermon.speaker %>
+        </span>
+        <span class="flex items-center">
+          <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+          </svg>
+          <%= @sermon.date.strftime("%d %B %Y") %>
+        </span>
+      </div>
+
+      <!-- Vidéo -->
+      <% if @sermon.video_url.present? && (@sermon.video_url.include?('youtube.com') || @sermon.video_url.include?('youtu.be')) %>
+        <% youtube_id = @sermon.video_url[/youtu\.be\/([\w-]+)/, 1] || @sermon.video_url[/v=([\w-]+)/, 1] %>
+        <% if youtube_id %>
+          <div class="mb-6 rounded-lg overflow-hidden">
+            <div class="aspect-w-16 aspect-h-9 bg-gray-800">
+              <iframe 
+                src="https://www.youtube.com/embed/<%= youtube_id %>" 
+                frameborder="0" 
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                allowfullscreen
+                class="w-full h-full">
+              </iframe>
+            </div>
+          </div>
+        <% end %>
+      <% elsif @sermon.video.attached? %>
+        <div class="mb-6 rounded-lg overflow-hidden">
+          <video class="w-full" controls>
+            <source src="<%= url_for(@sermon.video) %>" type="video/mp4">
+            Votre navigateur ne supporte pas la lecture vidéo.
+          </video>
+        </div>
+      <% end %>
+
+      <!-- Audio -->
+      <% if @sermon.audio.attached? %>
+        <div class="mb-6 bg-gray-50 rounded-lg p-6">
+          <h2 class="text-xl font-semibold text-gray-900 mb-4">Écouter le sermon</h2>
+          <audio controls class="w-full">
+            <source src="<%= url_for(@sermon.audio) %>" type="audio/mpeg">
+            Votre navigateur ne supporte pas la lecture audio.
+          </audio>
+        </div>
+      <% end %>
+
+      <!-- Description -->
+      <div class="mb-6">
+        <h2 class="text-xl font-semibold text-gray-900 mb-3">Description</h2>
+        <p class="text-gray-700 leading-relaxed whitespace-pre-line"><%= @sermon.description %></p>
+      </div>
+
+      <!-- Références bibliques -->
+      <% if @sermon.scripture_references.present? %>
+        <div class="bg-indigo-50 rounded-lg p-6">
+          <h2 class="text-xl font-semibold text-gray-900 mb-3">Références bibliques</h2>
+          <p class="text-indigo-800 italic"><%= @sermon.scripture_references %></p>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>
+
