@@ -311,7 +311,7 @@ app/views/
 
    ```ruby
    # Dans ApplicationController, remplacer par require_login
-   # Ou créer la méthode authenticate_user!
+   # Ou créer la méthode authenticate_user!!
    ```
 
 4. **Créer ContactMailer**
